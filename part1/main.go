@@ -25,8 +25,11 @@ func readFile(fileName string) ([]string, error) {
 func searchInText(text []string, query string) []string {
 	var result []string
 	for _, line := range text {
-		if strings.Contains(line, query) {
-			result = append(result, line)
+		sentences := strings.Split(line, ". ")
+		for _, sentence := range sentences {
+			if strings.Contains(sentence, query) {
+				result = append(result, sentence)
+			}
 		}
 	}
 	return result
@@ -46,7 +49,7 @@ func main() {
 	results := searchInText(text, query)
 
 	fmt.Println("Результати пошуку:")
-	for _, line := range results {
-		fmt.Println(line)
+	for _, sentence := range results {
+		fmt.Println(sentence)
 	}
 }
