@@ -23,18 +23,18 @@ func readFile(fileName string) ([]string, error) {
 }
 
 func searchInText(text []string, query string) []string {
-    var result []string
-    uniqueItems := make(map[int]struct{})
+	var result []string
+	uniqueItems := make(map[int]struct{})
 
-    for i, line := range text {
-        if strings.Contains(line, query) {
-            if _, exists := uniqueItems[i]; !exists {
-                result = append(result, line)
-                uniqueItems[i] = struct{}{}
-            }
-        }
-    }
-    return result
+	for i, line := range text {
+		if strings.Contains(line, query) {
+			if _, exists := uniqueItems[i]; !exists {
+				result = append(result, line)
+				uniqueItems[i] = struct{}{}
+			}
+		}
+	}
+	return result
 }
 
 func main() {
@@ -44,14 +44,19 @@ func main() {
 		return
 	}
 
-	var query string
-	fmt.Println("Введіть рядок для пошуку:")
-	fmt.Scanln(&query)
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Введіть рядок для пошуку: ")
+	query, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Println("Помилка зчитування вводу:", err)
+		return
+	}
+	query = strings.TrimSpace(query)
 
 	results := searchInText(text, query)
 
 	fmt.Println("Результати пошуку:")
-	for _, sentence := range results {
-		fmt.Println(sentence)
+	for _, line := range results {
+		fmt.Println(line)
 	}
 }
